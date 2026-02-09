@@ -4,6 +4,19 @@ import path from "path";
 
 export default defineConfig({
   plugins: [vue()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        includePaths: [path.resolve(__dirname, 'src')],
+        additionalData: `@use "@/styles/_colours" as *;`,
+      }
+    }
+  },
   build: {
     outDir: path.resolve(__dirname, "../wwwroot/dist"),
     emptyOutDir: true,
