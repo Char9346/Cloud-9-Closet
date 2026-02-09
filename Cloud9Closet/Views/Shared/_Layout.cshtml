@@ -1,13 +1,39 @@
-﻿<!DOCTYPE html>
+﻿@inject Umbraco.Cms.Core.IPublishedContentQuery publishedContentQuery;
+@{
+	var home = publishedContentQuery.ContentAtRoot().OfType<Home>().FirstOrDefault();
+	var settings = home?.DescendantOrSelf<Settings>();
+	var isLoggedIn = false;
+}
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<link rel="stylesheet" href="~/dist/main.css" />
-		<title>Cloud 9 Closet</title>
-	</head>
-	<body>
-		<div id="mount-app"></div>
-		<script type="module" src="~/dist/main.js"></script>
-		@RenderBody()
-	</body>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="~/dist/main.css" />
+	<title>Cloud 9 Closet</title>
+</head>
+<body>
+	<div id="mount-app"></div>
+	<script type="module" src="~/dist/main.js"></script>
+	<div class="header">
+		<div class="header__logo-container">
+			<a href="@home?.Url()">
+				<img src="@settings?.Logo?.Url()" class="header__logo" alt="Logo" />
+			</a>
+		</div>
+		@if(!isLoggedIn)
+		{			
+			<div class="header__login">
+				<a href="fill" class="login-link">Login</a>
+				<a href="fill" class="login-link">Register</a>
+			</div>
+		}
+		@if (isLoggedIn)
+		{
+			<div class="header__login">
+				<a href="" class="login-link">Sign out</a>
+			</div>
+		}
+	</div>
+	@RenderBody()
+</body>
 </html>
